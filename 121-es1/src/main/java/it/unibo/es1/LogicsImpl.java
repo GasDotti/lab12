@@ -1,5 +1,6 @@
 package it.unibo.es1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,8 @@ import java.util.List;
  */
 public class LogicsImpl implements Logics {
 
-    private static final String ERROR_MESSAGE = "Unimplemented method";
+    //private static final String ERROR_MESSAGE = "Unimplemented method";
+    private List<Integer> buttons;
 
     /**
      * Constructor.
@@ -15,7 +17,10 @@ public class LogicsImpl implements Logics {
      * @param size the size of the logics
      */
     public LogicsImpl(final int size) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        this.buttons = new ArrayList<>();
+        for(int i = 0; i < size; i++) {
+            this.buttons.add(0);
+        }
     }
 
     /**
@@ -23,7 +28,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public int size() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return this.buttons.size();
     }
 
     /**
@@ -31,7 +36,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public List<Integer> values() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return List.copyOf(this.buttons);
     }
 
     /**
@@ -39,7 +44,9 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public List<Boolean> enabledStates() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return this.buttons.stream()
+        .map(b -> b < this.size())
+        .toList();
     }
 
     /**
@@ -47,7 +54,8 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public int hit(final int elem) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        this.buttons.set(elem, this.buttons.get(elem) +1);
+        return this.buttons.get(elem);
     }
 
     /**
@@ -55,7 +63,10 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public String result() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return this.buttons.stream()
+        .map(b -> b.toString())
+        .reduce((a, b) -> a.concat("|").concat(b))
+        .orElse("error");
     }
 
     /**
@@ -63,6 +74,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public boolean toQuit() {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
+        return this.buttons.stream()
+        .allMatch(b -> b.equals(this.buttons.size()));
     }
 }
