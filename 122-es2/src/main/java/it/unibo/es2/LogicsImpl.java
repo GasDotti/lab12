@@ -1,18 +1,28 @@
 package it.unibo.es2;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Ignored.
+ */
 public class LogicsImpl implements Logics {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final Map<Pair<Integer, Integer>, Boolean> grid;
     private final int size;
 
+    /**
+     * @param diagonalSize Size.
+     */
     public LogicsImpl(final int diagonalSize) {
         this.size = diagonalSize;
         this.grid = new HashMap<>();
         for (int i = 0; i < this.size; i++) {
-            for (int j = 0 ; j < this.size; j++) {
+            for (int j = 0; j < this.size; j++) {
                 grid.put(new Pair<>(i, j), false);
             }
         } 
@@ -22,7 +32,7 @@ public class LogicsImpl implements Logics {
      * {@inheritDoc}
      */
     @Override
-    public void hit(Pair<Integer, Integer> pos) {
+    public void hit(final Pair<Integer, Integer> pos) {
         this.grid.put(pos, !this.grid.get(pos));
     }
 
@@ -31,7 +41,7 @@ public class LogicsImpl implements Logics {
      */
     @Override
     public boolean toQuit() {
-        Boolean cols = this.grid.entrySet()
+        final Boolean cols = this.grid.entrySet()
         .stream()
         .map(e -> new Pair<Integer, Boolean>(e.getKey().x(), e.getValue()))
         .collect(
@@ -41,7 +51,7 @@ public class LogicsImpl implements Logics {
         .values()
         .contains(true);
 
-        Boolean raws = this.grid.entrySet()
+        final Boolean raws = this.grid.entrySet()
         .stream()
         .map(e -> new Pair<Integer, Boolean>(e.getKey().y(), e.getValue()))
         .collect(
@@ -50,7 +60,7 @@ public class LogicsImpl implements Logics {
         HashMap::putAll)
         .values()
         .contains(true);
-        
+
         return cols || raws;
     }
 }
